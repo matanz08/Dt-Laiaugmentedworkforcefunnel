@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Adoption — Structural Funnel</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0D0A08;
+      font-family: 'Georgia', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 40px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 56px;
+      max-width: 680px;
+    }
+
+    .header-label {
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: #C8472A;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 400;
+      color: #F5EDE0;
+      line-height: 1.15;
+      letter-spacing: -0.5px;
+      margin-bottom: 14px;
+    }
+
+    .header p {
+      color: #7A6A5A;
+      font-size: 13px;
+      line-height: 1.7;
+      font-family: 'Courier New', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .funnel-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 860px;
+      position: relative;
+    }
+
+    .center-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, #C8472A33, #5C2E1A88);
+      transform: translateX(-50%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .layer { position: relative; z-index: 1; }
+
+    .layer-block {
+      border-style: solid;
+      border-width: 1px;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      position: relative;
+      overflow: hidden;
+      padding: 22px 36px;
+    }
+
+    .layer-block:hover { filter: brightness(1.15); }
+
+    .layer-inner {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .layer-left { flex: 1; min-width: 180px; }
+
+    .layer-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+
+    .layer-num {
+      font-family: 'Courier New', monospace;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: -1px;
+      opacity: 0.75;
+      transition: opacity 0.3s;
+    }
+
+    .layer-divider { width: 36px; height: 1px; }
+
+    .layer-tag {
+      font-family: 'Courier New', monospace;
+      font-size: 8px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+    }
+
+    .layer-title {
+      font-size: clamp(12px, 1.5vw, 16px);
+      font-weight: 400;
+      color: #C8A882;
+      line-height: 1.3;
+      margin-bottom: 4px;
+      transition: color 0.3s;
+    }
+
+    .layer-subtitle {
+      font-family: 'Courier New', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: #5A4A3A;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    .layer-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: flex-start;
+    }
+
+    .fair-tag {
+      font-family: 'Courier New', monospace;
+      font-size: 7px;
+      letter-spacing: 1.5px;
+      padding: 3px 7px;
+      border-radius: 2px;
+      border-style: solid;
+      border-width: 1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: all 0.3s;
+    }
+
+    .layer-summary {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(245,237,224,0.12);
+      display: none;
+    }
+
+    .layer-summary p {
+      color: rgba(245,237,224,0.82);
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .layer-summary.open { display: block; }
+
+    .wedge svg { display: block; }
+
+    .apex-point { display: flex; justify-content: center; }
+
+    .apex-label {
+      font-family: 'Courier New', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: #5C2E1A;
+      text-transform: uppercase;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .footer {
+      margin-top: 60px;
+      font-family: 'Courier New', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #3A2A1A;
+      text-transform: uppercase;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-label">The Incentive Architecture of AI Adoption</div>
+    <h1>From Systemic to Structural</h1>
+    <p>Four compounding failures — narrowing from market-level misalignment<br>to individual legitimacy collapse. Click any layer to expand.</p>
+  </div>
+
+  <div class="funnel-wrapper">
+    <div class="center-line"></div>
+
+    <!-- ISSUE 1 — Governance vs Market Speed -->
+    <div class="layer" style="width:100%;">
+      <div class="layer-block"
+        style="background: linear-gradient(135deg, #C8472A22, #C8472A44); border-color: #C8472A55; border-radius: 8px 8px 0 0;"
+        data-color="#C8472A" data-accent="#FF6B47"
+        onclick="toggleLayer(this, 0)">
+        <div class="layer-inner">
+          <div class="layer-left">
+            <div class="layer-meta">
+              <span class="layer-num" style="color:#FF6B47;">01</span>
+              <div class="layer-divider" style="background:#FF6B4755;"></div>
+              <span class="layer-tag" style="color:#FF6B4799;">MARKET · GOVERNANCE · SPEED</span>
+            </div>
+            <h2 class="layer-title">Incentive Compulsion Collides with Governance Capacity</h2>
+            <div class="layer-subtitle">STRUCTURAL ISSUE 1 — BROADEST</div>
+          </div>
+          <div class="layer-tags">
+            <span class="fair-tag" style="color:#FF6B47; border-color:#FF6B4744;">ADAPTABILITY</span>
+            <span class="fair-tag" style="color:#FF6B47; border-color:#FF6B4744;">FLEXIBILITY</span>
+          </div>
+        </div>
+        <div class="layer-summary">
+          <p>Market adoption outpaces governance. Firms gain speed advantage while regulatory frameworks, judicial doctrine, and institutional credentialing lag. A rational system at the firm level becomes misaligned at the societal level — and that misalignment is an ethical problem, not just an efficiency one. When governance failure becomes politically visible, legislatures respond with blunt, poorly calibrated statutes that work for existing tools, not future ones.</p>
+        </div>
+      </div>
+      <div class="wedge">
+        <svg width="100%" height="22" viewBox="0 0 100 22" preserveAspectRatio="none">
+          <polygon points="0,0 100,0 82,22 18,22" fill="#C8472A33"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ISSUE 2 — Doctrinal Uncertainty / Liability -->
+    <div class="layer" style="width:82%;">
+      <div class="layer-block"
+        style="background: linear-gradient(135deg, #B5561E22, #B5561E44); border-color: #B5561E55; border-radius: 0;"
+        data-color="#B5561E" data-accent="#E07040"
+        onclick="toggleLayer(this, 1)">
+        <div class="layer-inner">
+          <div class="layer-left">
+            <div class="layer-meta">
+              <span class="layer-num" style="color:#E07040;">02</span>
+              <div class="layer-divider" style="background:#E0704055;"></div>
+              <span class="layer-tag" style="color:#E0704099;">LIABILITY · GENERATIONS · DOCTRINE</span>
+            </div>
+            <h2 class="layer-title">Shared Doctrinal Uncertainty: Who Bears the Risk</h2>
+            <div class="layer-subtitle">STRUCTURAL ISSUE 2</div>
+          </div>
+          <div class="layer-tags">
+            <span class="fair-tag" style="color:#E07040; border-color:#E0704044;">FLEXIBILITY</span>
+            <span class="fair-tag" style="color:#E07040; border-color:#E0704044;">RESILIENCE</span>
+          </div>
+        </div>
+        <div class="layer-summary">
+          <p>Liability doesn't resolve through contractual reallocation. The difference across parties is capital endurance — who can survive the litigation queue longest absorbs the cost of doctrinal resolution. Exposure follows generational position: Gen Z enters at the most legally exposed position, Millennials administer compliance systems they didn't design, and Gen X structures deployment frameworks that determine how liability flows downward.</p>
+        </div>
+      </div>
+      <div class="wedge">
+        <svg width="100%" height="22" viewBox="0 0 100 22" preserveAspectRatio="none">
+          <polygon points="0,0 100,0 82,22 18,22" fill="#B5561E33"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ISSUE 3 (formerly 4) — Capital Scarcity & Legitimacy Erosion -->
+    <div class="layer" style="width:64%;">
+      <div class="layer-block"
+        style="background: linear-gradient(135deg, #8C4A2F22, #8C4A2F44); border-color: #8C4A2F55; border-radius: 0;"
+        data-color="#8C4A2F" data-accent="#B86040"
+        onclick="toggleLayer(this, 2)">
+        <div class="layer-inner">
+          <div class="layer-left">
+            <div class="layer-meta">
+              <span class="layer-num" style="color:#B86040;">03</span>
+              <div class="layer-divider" style="background:#B8604055;"></div>
+              <span class="layer-tag" style="color:#B8604099;">CAPITAL · METRICS · LEGITIMACY</span>
+            </div>
+            <h2 class="layer-title">Capital Scarcity, Measurement Blindness & Legitimacy Erosion</h2>
+            <div class="layer-subtitle">STRUCTURAL ISSUE 3</div>
+          </div>
+          <div class="layer-tags">
+            <span class="fair-tag" style="color:#B86040; border-color:#B8604044;">RESILIENCE</span>
+            <span class="fair-tag" style="color:#B86040; border-color:#B8604044;">IMAGINATION</span>
+            <span class="fair-tag" style="color:#B86040; border-color:#B8604044;">FLEXIBILITY</span>
+            <span class="fair-tag" style="color:#B86040; border-color:#B8604044;">ADAPTABILITY</span>
+          </div>
+        </div>
+        <div class="layer-summary">
+          <p>Capital scarcity and measurement failure produce the same consequence: institutions unable to govern what they have permitted. Standard labor metrics cannot detect bifurcation — a society can simultaneously produce data showing employment health and a lived experience of precarity, and both can be true. Governing through frameworks that cannot detect the split actively delays the institutional response the data cannot yet surface.</p>
+        </div>
+      </div>
+      <div class="wedge">
+        <svg width="100%" height="22" viewBox="0 0 100 22" preserveAspectRatio="none">
+          <polygon points="0,0 100,0 82,22 18,22" fill="#8C4A2F33"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ISSUE 4 (formerly 3) — Career Ladder Compression -->
+    <div class="layer" style="width:46%;">
+      <div class="layer-block"
+        style="background: linear-gradient(135deg, #5C2E1A22, #5C2E1A44); border-color: #5C2E1A55; border-radius: 0 0 8px 8px;"
+        data-color="#5C2E1A" data-accent="#8C4A2F"
+        onclick="toggleLayer(this, 3)">
+        <div class="layer-inner">
+          <div class="layer-left">
+            <div class="layer-meta">
+              <span class="layer-num" style="color:#8C4A2F;">04</span>
+              <div class="layer-divider" style="background:#8C4A2F55;"></div>
+              <span class="layer-tag" style="color:#8C4A2F99;">FORMATION · PIPELINE · INDIVIDUAL</span>
+            </div>
+            <h2 class="layer-title">Career Ladder Compression & Professional Formation</h2>
+            <div class="layer-subtitle">STRUCTURAL ISSUE 4 — NARROWEST</div>
+          </div>
+          <div class="layer-tags">
+            <span class="fair-tag" style="color:#8C4A2F; border-color:#8C4A2F44;">RESILIENCE</span>
+            <span class="fair-tag" style="color:#8C4A2F; border-color:#8C4A2F44;">IMAGINATION</span>
+          </div>
+        </div>
+        <div class="layer-summary">
+          <p>Routine cognitive tasks compress first, eliminating the apprenticeship substrate through which junior professionals develop judgment. The formation sequence — learn, practice, earn trust, gain authority — breaks down at its earliest steps. AI substitutes adequately today, masking the deficit until firms need senior professionals capable of auditing and governing AI systems at scale, only to find the pipeline was eliminated a decade earlier.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apex -->
+    <div class="apex-point" style="width:46%;">
+      <svg width="100%" height="30" viewBox="0 0 100 30" preserveAspectRatio="none">
+        <polygon points="0,0 100,0 50,30" fill="#5C2E1A44"/>
+      </svg>
+    </div>
+    <div class="apex-label">▼ Individual Career Collapse</div>
+  </div>
+
+  <div class="footer">AI Augmented Workforce Scenario · 2026–2032</div>
+
+  <script>
+    const activeStates = [false, false, false, false];
+
+    function toggleLayer(el, index) {
+      activeStates[index] = !activeStates[index];
+      const isActive = activeStates[index];
+      const color = el.getAttribute('data-color');
+      const accent = el.getAttribute('data-accent');
+      const summary = el.querySelector('.layer-summary');
+      const num = el.querySelector('.layer-num');
+      const title = el.querySelector('.layer-title');
+      const subtitle = el.querySelector('.layer-subtitle');
+      const tags = el.querySelectorAll('.fair-tag');
+      const divider = el.querySelector('.layer-divider');
+      const tag = el.querySelector('.layer-tag');
+
+      if (isActive) {
+        el.style.background = `linear-gradient(135deg, ${color}EE, ${accent}CC)`;
+        el.style.borderColor = color;
+        el.style.padding = '30px 36px';
+        num.style.opacity = '1';
+        title.style.color = '#F5EDE0';
+        subtitle.style.color = 'rgba(245,237,224,0.4)';
+        divider.style.background = 'rgba(245,237,224,0.4)';
+        tag.style.color = 'rgba(245,237,224,0.65)';
+        tags.forEach(t => {
+          t.style.color = '#F5EDE0';
+          t.style.borderColor = 'rgba(245,237,224,0.25)';
+        });
+        summary.classList.add('open');
+      } else {
+        el.style.background = `linear-gradient(135deg, ${color}22, ${color}44)`;
+        el.style.borderColor = `${color}55`;
+        el.style.padding = '22px 36px';
+        num.style.opacity = '0.75';
+        title.style.color = '#C8A882';
+        subtitle.style.color = '#5A4A3A';
+        divider.style.background = `${accent}55`;
+        tag.style.color = `${accent}99`;
+        tags.forEach(t => {
+          t.style.color = accent;
+          t.style.borderColor = `${accent}44`;
+        });
+        summary.classList.remove('open');
+      }
+    }
+  </script>
+</body>
+</html>
